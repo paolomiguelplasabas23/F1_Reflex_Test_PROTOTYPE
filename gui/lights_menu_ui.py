@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QColor
-from storage import add_score
+from database import DB
 
 LIGHT_SIZE = (60, 60)
 WINDOW_SIZE = (563, 564)
@@ -50,7 +50,7 @@ class LightsWindow(QMainWindow):
         # RESTART TIMER
         self.restart_timer = QTimer(self)
         self.restart_timer.setSingleShot(True)
-        self.restart_timer.timeout.connect(self.start_sequence)
+        self.restart_timer.timeout.connect(self.start)
 
         self.setWindowTitle("Lights Out")
         self.setStyleSheet("background-color: black;")
@@ -73,7 +73,7 @@ class LightsWindow(QMainWindow):
 
         title = QLabel("LIGHTS OUT")
         title.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-        title.setStyleSheet("color: #e10600; font-size: 26; ...")
+        title.setStyleSheet("color: #e10600; font-size: 26px; font-weight: 900;")
         layout.addWidget(title)
 
         self.goLabel = QLabel("")
@@ -86,14 +86,14 @@ class LightsWindow(QMainWindow):
         lights_row.setSpacing(12)
 
         for _ in range(CONFIG["light_count"]):
-                light = QLabel()
-                light.setFixedSize(*LIGHT_SIZE)
-                self.set_light_off(light)
-                self.lights.append(light)
-                lights_row.addWidget(light)
+            light = QLabel()
+            light.setFixedSize(*LIGHT_SIZE)
+            self.set_light_off(light)
+            self.lights.append(light)
+            lights_row.addWidget(light)
         layout.addLayout(lights_row)
 
-        info = QLabel("PRESS SPACE AFTER LIGHTS GO OUT")
+        info = QLabel("PRESS SPACE OR REACT BUTTON AFTER LIGHTS GO OUT")
         info.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         info.setStyleSheet("color: #888; font-size: 11px;")
         layout.addWidget(info)
@@ -102,15 +102,29 @@ class LightsWindow(QMainWindow):
         btn_row.setSpacing(12)
 
         self.reactButton = QPushButton("REACT")
-        self.reactButton.setStyleSheet("""...""")
+        self.reactButton.setStyleSheet("""
+            QPushButton {
+                background-color:#e10600; color:white;
+                font-weight:900; font-size:14px;
+                padding:12px; border:none; border-radius:6px;
+            }
+            QPushButton:hover { background-color:#ff1a1a; }
+        """)
         self.reactButton.clicked.connect(self.handle_react)
         btn_row.addWidget(self.reactButton)
 
-
-        layout.addLayout(btn_row)
-
-    def start(self):
-        self.start_sequence()    
+        self.backButton = QPushButton("BACK")
+        self.backButton.setStyleSheet("""
+            QPushButton{
+                background-color: color:black;
+                font-weight: 700; font-size: 14px;
+                padding: 12px; border:none; border-radius:6px;
+            }
+            QPushButton:hover{ background-color: #dddddd;}
+        """)
+        self.backButton.clicked.connect(self.go_back)
+        btn_row.addWidget(self.backButton)
+        layout.addLayout(btn_row)    
 
     def set_light_off(self, light):
         light.setStyleSheet(
@@ -118,36 +132,23 @@ class LightsWindow(QMainWindow):
         )
         light.setGraphicsEffect(None)
 
-
-    def set_light_on(self, light):
-        light.setStyleSheet(
-            "background-color: #e10600; border-radius: 30px; border: 2px solid #333;"
-        )
-        glow = QGraphicsDropShadowEffect(light)
-        glow.setBlurRadius(30)
-        glow.setColor(QColor("#e10600"))
-        glow.setOffset(0, 0)
-        light.setGraphicsEffect(glow)
-
-    def start_sequence(self):
+    def start(self):
         self.timer.stop()
-        self.wait_timer.stop()
         self.wait_timer.stop()
         self.restart_timer.stop()
 
         for light in self.lights:
             self.set_light_off(light)
 
-            self.goLabel.setText("")
-            self.goLabel.setStyleSheet("")
+        self.goLabel.setText("")
+        self.goLabel.setStyleSheet("")
+        self.lit_count = 0
+        self.go_time = None
+        self.can_react = False
+        self.sequence_running = True
+        self.jump_started = False
 
-            self.lit_count = 0
-            self.go_time = None
-            self.can_react = False
-            self.sequence_running = True
-            self.jump_started = False
-
-            self.timer.start(CONFIG["tick_ms"])
+        self.timer.start(CONFIG["tick_ms"])
 
     def light_next(self):
         if self.lit_count < CONFIG["light_count"]:
@@ -159,29 +160,43 @@ class LightsWindow(QMainWindow):
                 random.randint(CONFIG["wait_min_ms"], CONFIG["wait_max_ms"])
             )
 
+    def set_light_on(self, light):
+        light.setStyleSheet(
+            "background-color: #e10600; border-radius: 30px; border: 2px solid #333;"
+        )
+        glow = QGraphicsDropShadowEffect(light)
+        glow.setBlurRadius(30)
+        glow.setColor(QColor("#e10600"))
+        glow.setOffset(0, 0)
+        light.setGraphicsEffect(glow)
+
     def lights_out(self):
+        self.go_time = time.time()
         for light in self.lights:
             self.set_light_off(light)
         self.goLabel.setText("GO GO GO!")
         self.goLabel.setStyleSheet("color: #00c853; font-size: 22px; font-weight: 900;")
-        self.go_time = time.time()
         self.can_react = True
         self.sequence_running = False
 
     def handle_react(self):
-        # CASE A: IF PLAYER ALREADY JUMP STARTED AND CLICKED REACT TO RETRY
+        # CASE A: IF PLAYER ALREADY JUMP STARTED AND CLICKED SPACE TO RETRY
         if self.jump_started:
-            self.start_sequence()
+            self.start()
             return
 
-        # CASE B: PRESSED TOO EAR:Y/ JUMP STARTED
+        # CASE B: PRESSED TOO EARLY/ JUMP STARTED
         if self.sequence_running or self.wait_timer.isActive():
             self.timer.stop()
             self.wait_timer.stop()
             self.sequence_running = False
             self.jump_started = True
-            self.goLabel.setText("JUMP START! Click REACT to retry")
+            self.goLabel.setText("JUMP START! PRESS SPACE TO RETRY or REACT BUTTON TO RETRY")
             self.goLabel.setStyleSheet("color: #e10600; font-size: 18px; font-weight: 900;")
+
+            user = getattr(self.app, "current_user", None)
+            if user:
+                DB.create_session(user["player_id"], "Jump Start")
             return
 
         # CASE C: VALID REACTION.
@@ -191,7 +206,14 @@ class LightsWindow(QMainWindow):
             self.goLabel.setStyleSheet("color: #ffffff; font-size: 22px; font-weight: 900;")
             self.can_react = False
             
-            add_score(reaction_ms)
+            # add_score(reaction_ms)
+            user = getattr(self.app, "current_user", None)
+            if user:
+                rating = DB.rate_reaction(reaction_ms)
+                sid = DB.create_session(user["player_id"], "Valid")
+                DB.save_reaction(sid, user["player_id"], reaction_ms, rating)
+                DB.refresh_leaderboard()
+
             self.restart_timer.start(CONFIG["restart_delay_ms"])
             return
 

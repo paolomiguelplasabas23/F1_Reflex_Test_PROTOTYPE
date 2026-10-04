@@ -628,7 +628,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="start_game">
          <property name="font">
           <font>
            <family>Gill Sans Ultra Bold</family>
@@ -648,16 +648,16 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="pushButton">
          <property name="font">
           <font>
-           <family>Gill Sans MT</family>
-           <pointsize>11</pointsize>
+           <family>Gill Sans</family>
+           <pointsize>9</pointsize>
            <bold>true</bold>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: rgb(138, 138, 138)</string>
+          <string notr="true">background-color:rgb(103, 103, 103)</string>
          </property>
          <property name="text">
           <string>🏆LEADERBOARD</string>

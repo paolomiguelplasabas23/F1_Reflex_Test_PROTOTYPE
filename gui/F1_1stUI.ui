@@ -647,6 +647,23 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="leaderboard_button">
+         <property name="font">
+          <font>
+           <family>Gill Sans</family>
+           <pointsize>9</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:rgb(103, 103, 103)</string>
+         </property>
+         <property name="text">
+          <string>🏆LEADERBOARD</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
