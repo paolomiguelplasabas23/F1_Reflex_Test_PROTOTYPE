@@ -399,9 +399,9 @@ All queries use **parameterized placeholders (`?`)** to prevent SQL injection.
 
 ## 14. Author
 
-| Name | Section |
+| Name | Section/Code |
 |---|---|
-| **Paolo Miguel C. Plasabas** | BSCS — 2 |
+| **Paolo Miguel C. Plasabas** | CS26L — 3581 |
 
 **Course:** CS26 - Software Development
 **Institution:** University of Mindanao — College of Computing Education
