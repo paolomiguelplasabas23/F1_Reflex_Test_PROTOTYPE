@@ -1,6 +1,6 @@
 # F1 Reflex Test
 
-**CCE105L — Data Structures and Algorithms | 3rd Written Examination**
+**CS26 - SOFTWARE DEVELOPMENT | 3rd Written Examination**
 
 A desktop reaction-time trainer inspired by Formula 1's start-light sequence.
 Built with **Python**, **PyQt6**, and **SQLite**.
@@ -19,7 +19,6 @@ Built with **Python**, **PyQt6**, and **SQLite**.
 ---
 
 ## 2. Project Description
-
 The F1 Reflex Test is a desktop application that measures a user's reaction time through an interactive sequence inspired by Formula 1's start lights. Five red lights turn on one at a time, then go out after a randomized delay. The player must react as quickly as possible once the lights go out, and their reaction time is measured in milliseconds.
 
 **Problem it addresses:** Most reaction-time tests are browser-based, require internet access, and do not store results. There is no simple offline desktop tool that simulates the visual tension of a real F1 start while also tracking a player's performance over time.
