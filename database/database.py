@@ -96,14 +96,11 @@ class Database:
             ).fetchone()
         return dict(row) if row else None
 
-    def update_player(self, player_id: int, fullname: str = None, password: str = None):
+    def update_player(self, player_id: int, fullname: str = None):
         fields, values = [], []
         if fullname:
             fields.append("fullname = ?")
             values.append(fullname)
-        if password:
-            fields.append("password = ?")
-            values.append(password)
         if not fields:
             return False
         values.append(player_id)
