@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QColor
-from database import DB
+from features.game import save_jump_start, save_valid_reaction
 
 LIGHT_SIZE = (60, 60)
 WINDOW_SIZE = (563, 564)
@@ -212,24 +212,20 @@ class LightsWindow(QMainWindow):
 
             user = getattr(self.app, "current_user", None)
             if user:
-                DB.create_session(user["player_id"], "Jump Start")
+                save_jump_start(user["player_id"])
             return
-
         # CASE C: VALID REACTION.
         if self.can_react:
             reaction_ms = int((time.time() - self.go_time) * 1000)
             self.goLabel.setText(f"Reaction Time: {reaction_ms} ms")
             self.goLabel.setStyleSheet("color: #ffffff; font-size: 22px; font-weight: 900;")
             self.can_react = False
-            
-            # add_score(reaction_ms)
-            user = getattr(self.app, "current_user", None)
-            if user:
-                rating = DB.rate_reaction(reaction_ms)
-                sid = DB.create_session(user["player_id"], "Valid")
-                DB.save_reaction(sid, user["player_id"], reaction_ms, rating)
-                DB.refresh_leaderboard()
 
+        user = getattr(self.app, "current_user", None)
+        if user:
+            save_valid_reaction(user["player_id"], reaction_ms)
+        return
+            
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Space:
             self.handle_react()

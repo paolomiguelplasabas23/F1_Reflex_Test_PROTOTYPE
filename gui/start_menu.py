@@ -1,10 +1,10 @@
 from PyQt6 import uic
 from PyQt6.QtWidgets import QMainWindow, QPushButton
 
-from gui.lights_menu_ui import LightsWindow
+from gui.lights_window import LightsWindow
 from gui.login_page import LoginPage
 from gui.driver_register_page import RegistrationPage
-from gui.leaderboard import Leaderboard
+from gui.leaderboard_window import Leaderboard
 
 
 class StartMenu(QMainWindow):

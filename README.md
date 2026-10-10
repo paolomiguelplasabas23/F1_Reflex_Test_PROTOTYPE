@@ -1,70 +1,50 @@
-# F1 Reflex Test
-
-**CS26 - SOFTWARE DEVELOPMENT | 3rd Written Examination**
-
-A desktop reaction-time trainer inspired by Formula 1's start-light sequence.
-Built with **Python**, **PyQt6**, and **SQLite**.
+# F1 REFLEX TEST — Reaction-Time Trainer with Leaderboard
+## Project Description
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)
 ![PyQt6](https://img.shields.io/badge/PyQt6-6.x-green?logo=qt&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-3-blue?logo=sqlite&logoColor=white)
 ![Platform](https://img.shields.io/badge/platform-Windows-informational)
 
----
+F1 REFLEX TEST is a **desktop reaction-time trainer** inspired by Formula 1's start-light sequence. The application simulates five red lights that turn on one at a time, then go out after a randomized delay. The player must react as quickly as possible once the lights go out, and the system measures the reaction time in milliseconds, assigns a driver rating, and stores the result in a **SQLite database**.
 
-## 1. Project Title
-
-**F1 Reflex Test** — A Desktop Reaction-Time Trainer Using PyQt6 and SQLite
+Most reaction-time tests are browser-based, require internet access, and do not save results. F1 REFLEX TEST provides a fully offline desktop alternative that tracks every attempt, ranks the fastest reactions on a top-10 leaderboard, and lets players compare their best times over multiple sessions.
 
 ---
 
-## 2. Project Description
-The F1 Reflex Test is a desktop application that measures a user's reaction time through an interactive sequence inspired by Formula 1's start lights. Five red lights turn on one at a time, then go out after a randomized delay. The player must react as quickly as possible once the lights go out, and their reaction time is measured in milliseconds.
+## Project Objectives
 
-**Problem it addresses:** Most reaction-time tests are browser-based, require internet access, and do not store results. There is no simple offline desktop tool that simulates the visual tension of a real F1 start while also tracking a player's performance over time.
+The main objectives of F1 REFLEX TEST are to:
 
-**Who it is for:** Students, gamers, motorsports fans, and anyone interested in measuring or training their visual reaction speed.
-
----
-
-## 3. Project Objectives
-
-### General Objective
-
-To develop a desktop application that simulates the F1 start-light sequence, measures reaction time accurately, and stores results for performance tracking.
-
-### Specific Objectives
-
-- Provide user registration and login
-- Simulate a 5-light F1 start sequence with an unpredictable GO signal
-- Measure reaction time to the nearest millisecond
-- Detect and penalize jump starts (reacting before GO)
-- Assign a driver rating based on reaction speed
-- Store all sessions and reaction times in a database
-- Display a top-10 leaderboard of the fastest valid reactions
-- Allow navigation between screens without restarting the app
+- Develop a Python-based desktop application that measures visual reaction time.
+- Simulate the F1 start-light sequence with a randomized GO signal.
+- Measure reaction time to the nearest millisecond.
+- Detect and penalize jump starts (reacting before the GO signal).
+- Assign a driver rating based on reaction speed.
+- Implement Create, Read, Update, and Delete operations for scores.
+- Provide a user-friendly graphical interface using PyQt6.
+- Apply object-oriented programming through PyQt6 window classes and inheritance.
+- Provide a persistent leaderboard of the top-10 fastest reactions.
 
 ---
 
-## 4. Features
+## Features
 
-| Feature | Description |
-|---|---|
-| **User Registration** | Create an account with full name, username, and password. Usernames are unique. |
-| **Login** | Authenticate against the database. Sessions are tracked per user. |
-| **Start Menu** | Central hub that navigates to login, the game, or the leaderboard. |
-| **Lights Game** | Five red lights turn on one by one every 800 ms. |
-| **Randomized GO Signal** | After all five lights are on, a random delay of 1–3 seconds triggers the GO signal. |
-| **Reaction Measurement** | SPACE key or REACT button records the elapsed milliseconds. |
-| **Jump Start Detection** | Reacting before GO ends the round with a penalty message. |
-| **Rating System** | Each valid reaction is assigned a rating from *F1 Racer* to *Normal Driver, Slow*. |
-| **Leaderboard** | Displays the top-10 fastest valid reactions with rank, name, time, rating, and date. |
-| **Persistent Storage** | All accounts, sessions, and scores survive app restarts via SQLite. |
+- **User Registration** — Create an account with a full name and unique username. The system validates required fields and prevents duplicate usernames.
+- **Login** — Access the application by entering a registered username.
+- **Start Menu** — Central hub for login, the game, and the leaderboard.
+- **Lights Sequence** — Five red lights turn on one at a time, 800 ms apart, simulating the F1 race start.
+- **Randomized GO Signal** — A random delay of 1 to 3 seconds after the last light. The player must react the moment the lights go out.
+- **Reaction Measurement** — The exact elapsed time from GO to key press is measured in milliseconds.
+- **Jump Start Detection** — Reacting before the GO signal ends the round with a penalty and saves the session as invalid.
+- **Rating System** — Each valid reaction is assigned a rating based on speed.
+- **Leaderboard** — Displays the top-10 fastest valid reactions with rank, rating, name, time, and date.
+- **Persistent Storage** — All accounts, sessions, and scores survive app restarts via SQLite.
 
 ### Rating Tiers
 
 | Reaction Time | Rating |
-|:---:|---|
+| :---: | --- |
 | `< 150 ms` | F1 Racer |
 | `150 – 199 ms` | F2 Racer |
 | `200 – 249 ms` | F3 Racer |
@@ -73,158 +53,178 @@ To develop a desktop application that simulates the F1 start-light sequence, mea
 
 ---
 
-## 5. Technologies Used
+## Technologies Used
 
-| Component | Technology |
-|---|---|
-| **Programming Language** | Python 3.10+ |
-| **GUI Framework** | PyQt6 (with Qt Designer for `.ui` layout files) |
-| **Database** | SQLite 3 (built into Python's standard library) |
-| **Other Libraries** | `time`, `random`, `datetime`, `sqlite3` |
-| **Development Tool** | Visual Studio Code |
+- **Programming Language:** Python 3
+- **GUI Framework:** PyQt6
+- **GUI Layout Tool:** Qt Designer (`.ui` files)
+- **Database:** SQLite
+- **Python Standard Libraries:** `sqlite3`, `datetime`, `time`, `random`
+- **GUI Styling:** Qt Style Sheets (QSS)
+- **Version Control:** Git and GitHub
 
 ---
 
-## 6. Project Structure
+## Project Structure
 
-```
+```text
 f1-reflex-test/
 │
-├── main.py                       # Entry point — launches the application
-├── f1_reflex.db                  # SQLite database (auto-created on first run)
+├── main.py
+├── f1_reflex.db
 ├── README.md
 ├── .gitignore
 │
 ├── database/
-│   ├── __init__.py               # Creates the shared DB instance
-│   └── database.py               # Database class — schema + all CRUD methods
+│   ├── __init__.py
+│   └── database.py
+│
+├── features/
+│   ├── __init__.py
+│   ├── auth.py
+│   ├── game.py
+│   └── leaderboard.py
 │
 ├── gui/
 │   ├── __init__.py
-│   ├── start_menu.py             # Navigation hub
-│   ├── login_page.py             # Login screen
-│   ├── driver_register_page.py   # Registration screen
-│   ├── lights_menu_ui.py         # The lights game
-│   └── leaderboard.py            # Leaderboard display
+│   ├── start_menu.py
+│   ├── login_page.py
+│   ├── register_page.py
+│   ├── lights_window.py
+│   └── leaderboard_window.py
 │
 ├── ui_designs/
-│   ├── F1_1stUI.ui               # Start menu layout
-│   ├── login_page_ui.ui          # Login layout
-│   ├── driver_page_ui.ui         # Registration layout
-│   └── leaderboard_ui.ui         # Leaderboard layout
+│   ├── F1_1stUI.ui
+│   ├── login_page_ui.ui
+│   ├── driver_page_ui.ui
+│   └── leaderboard_ui.ui
 │
 └── screenshots/
     ├── start_menu.png
-    ├── login.png
-    ├── register.png
+    ├── driver_login.png
+    ├── driver_register.png
     ├── lights_game.png
     ├── go_signal.png
-    ├── jump_start.png
+    ├── jumpstart.png
     └── leaderboard.png
 ```
 
-### Purpose of each major file
+### Folder and File Descriptions
 
-| File | Purpose |
-|---|---|
-| `main.py` | Creates the `QApplication` and launches the `StartMenu` window |
-| `database/database.py` | Contains the `Database` class with table creation and all CRUD operations |
-| `gui/start_menu.py` | Holds the reference to the current user and switches between screens |
-| `gui/lights_menu_ui.py` | Contains the game loop, timers, and reaction logic |
-| `gui/leaderboard.py` | Loads and displays the top-10 from the database |
+- `main.py` – Starts the F1 REFLEX TEST application and launches the PyQt6 main window.
+- `database/__init__.py` – Creates the shared `DB` instance and initializes the database on first launch.
+- `database/database.py` – Handles the SQLite connection and all CRUD operations for players, sessions, reactions, and the leaderboard.
+- `features/auth.py` – Contains login and registration logic.
+- `features/game.py` – Contains the rating calculation and score-saving logic.
+- `features/leaderboard.py` – Retrieves the top-10 leaderboard rows.
+- `gui/` – Contains the PyQt6 graphical interface for the start menu, login, registration, the lights game, and the leaderboard.
+- `ui_designs/` – Contains the Qt Designer `.ui` files that define the visual layout of each screen.
 
 ---
 
-## 7. Installation and Setup
+## Installation and Setup
 
 ### Requirements
+
+Before running F1 REFLEX TEST, install:
 
 - Python 3.10 or higher
 - PyQt6
 - Git
 
-### Steps
+### Step 1 — Clone or Download the Repository
 
-**1. Clone the repository**
+Clone the GitHub repository:
 
 ```bash
 git clone https://github.com/YOUR-USERNAME/f1-reflex-test.git
+```
+
+Then enter the project directory:
+
+```bash
 cd f1-reflex-test
 ```
 
-**2. Create a virtual environment**
+### Step 2 — Create a Virtual Environment
+
+Creating a virtual environment is recommended.
 
 ```bash
 python -m venv myappvenv
 ```
 
-**3. Activate the virtual environment**
+Activate it on Windows PowerShell:
 
-Windows PowerShell:
 ```powershell
 .\myappvenv\Scripts\Activate.ps1
 ```
 
-macOS / Linux:
+On macOS / Linux:
+
 ```bash
 source myappvenv/bin/activate
 ```
 
-**4. Install dependencies**
+### Step 3 — Install Dependencies
+
+Install the required Python libraries:
 
 ```bash
 pip install PyQt6
 ```
 
-**5. Run the application**
+### Step 4 — Run the Application
+
+Run:
 
 ```bash
 python main.py
 ```
 
-The database file `f1_reflex.db` is created automatically on first launch.
+The database file `f1_reflex.db` is created automatically on first launch. No manual database setup is required.
 
 ---
 
-## 8. How to Use the System
+## How to Use the System
 
-1. Launch the application — the **Start Menu** appears.
-2. Click **START** — you are redirected to the **Login page**.
-3. Click **REGISTER** to create a new account. Enter your full name, username, password, and confirm password.
-4. Return to the login screen and log in with your new credentials.
-5. Click **START** again — the **Lights Game** opens.
+1. Open the application by running `main.py`.
+2. On the Start Menu, click **START**. If not logged in, you are redirected to the Login page.
+3. Click **REGISTER** to create a new account. Enter your full name and desired username.
+4. Return to the login page and log in with your username.
+5. Click **START** again to open the **Lights Game**.
 6. Watch the five red lights turn on one at a time.
-7. Wait for all lights to go out and the **"GO GO GO!"** signal to appear.
+7. Wait for the **"GO GO GO!"** signal — the moment the lights go out.
 8. Press **SPACE** or click **REACT** as fast as you can.
-9. Your reaction time and rating appear on screen.
-10. Click **BACK** to return to the start menu.
+9. Your reaction time and rating appear on screen. The result is saved automatically.
+10. Click the **←** arrow at the top-left to return to the Start Menu.
 11. Click **LEADERBOARD** to view the top-10 fastest reactions.
 12. Click **BACK TO START** on the leaderboard to return.
 
-> **Note:** Pressing SPACE before the GO signal counts as a **jump start**. The round ends with a penalty and the session is saved as "Jump Start."
+> **Note:** Pressing SPACE before the GO signal counts as a **jump start**. The round ends with a penalty, and the session is saved as "Jump Start."
 
 ---
 
-## 9. OOP Implementation
+## OOP Implementation
 
-### Important Classes
+F1 REFLEX TEST uses classes to organize the graphical interface and the application logic.
 
-| Class | Inherits From | Purpose |
-|---|---|---|
-| `Database` | *(none)* | Handles all database operations |
-| `StartMenu` | `QMainWindow` | Navigation hub |
-| `LoginPage` | `QMainWindow` | Login screen |
-| `RegistrationPage` | `QMainWindow` | Registration screen |
-| `LightsWindow` | `QMainWindow` | The lights game |
-| `Leaderboard` | `QWidget` | Leaderboard display |
+Important classes:
+
+- `Database` – Handles all SQLite operations including table creation and every CRUD method.
+- `StartMenu` – The main navigation hub that holds the current user and switches between screens.
+- `LoginPage` – The login screen.
+- `RegistrationPage` – The account-creation screen.
+- `LightsWindow` – The lights game with timers and reaction handling.
+- `Leaderboard` – Displays the top-10 fastest reactions.
 
 ### Encapsulation
 
-The `Database` class encapsulates every database operation. GUI files call methods like `DB.login_player()` and `DB.get_leaderboard()` — they never touch SQL directly. If the storage engine were replaced, only `database.py` would need to change.
+Encapsulation is applied by grouping related data and behavior into classes. The `Database` class hides every SQL query behind simple methods like `create_player()`, `save_reaction()`, and `get_leaderboard()`. GUI files and feature modules never touch SQL directly — they call methods on the `DB` object. If the storage engine were replaced, only `database.py` would need to change.
 
 ### Inheritance
 
-Every screen class inherits from a PyQt widget class (`QMainWindow` or `QWidget`). This gives each screen built-in support for windows, resizing, title bars, and event handling without re-implementing them.
+Inheritance is used mainly through PyQt6. Every screen class inherits from a PyQt widget:
 
 ```python
 class StartMenu(QMainWindow):
@@ -232,9 +232,11 @@ class StartMenu(QMainWindow):
         super().__init__()     # calls QMainWindow's constructor
 ```
 
+`StartMenu`, `LoginPage`, `RegistrationPage`, and `LightsWindow` all inherit from `QMainWindow`. `Leaderboard` inherits from `QWidget`. This gives each screen built-in support for windows, resizing, title bars, and event handling without re-implementing them.
+
 ### Polymorphism
 
-`LightsWindow` overrides `keyPressEvent()`, which is inherited from `QWidget`. Qt calls our version to handle SPACE, while other keys fall through to the parent class.
+`LightsWindow` overrides `keyPressEvent()`, which is inherited from `QWidget`. Qt calls our version to handle the SPACE key, while other keys fall through to the parent class.
 
 ```python
 def keyPressEvent(self, event):
@@ -254,45 +256,46 @@ Each screen file creates instances of the classes at runtime:
 
 ---
 
-## 10. Database
+## Database
 
-### Database Structure
+F1 REFLEX TEST uses a SQLite database named `f1_reflex.db`. Four normalized tables are used.
 
-The project uses **SQLite 3**, stored in a single file `f1_reflex.db`. Four normalized tables are used.
+### player Table
 
-#### `player`
-| Column | Type | Constraint |
-|---|---|---|
-| player_id | INTEGER | PRIMARY KEY AUTOINCREMENT |
-| fullname | VARCHAR(50) | NOT NULL |
-| username | VARCHAR(50) | NOT NULL, UNIQUE |
-| password | VARCHAR(50) | NOT NULL |
+The `player` table stores:
 
-#### `game_sessions`
-| Column | Type | Constraint |
-|---|---|---|
-| session_id | INTEGER | PRIMARY KEY AUTOINCREMENT |
-| player_id | INTEGER | FOREIGN KEY → player |
-| session_date | DATE | |
-| session_time | TIME | |
-| result | VARCHAR(50) | CHECK IN ('Valid', 'Jump Start') |
+- `player_id` – Unique player ID generated automatically by the database.
+- `fullname` – The player's full name.
+- `username` – The player's unique username.
 
-#### `reaction_time`
-| Column | Type | Constraint |
-|---|---|---|
-| reaction_id | INTEGER | PRIMARY KEY AUTOINCREMENT |
-| session_id | INTEGER | FOREIGN KEY → game_sessions |
-| player_id | INTEGER | FOREIGN KEY → player |
-| reaction_time | DECIMAL(11,2) | milliseconds |
-| rating | VARCHAR(50) | |
+### game_sessions Table
 
-#### `leaderboard`
-| Column | Type | Constraint |
-|---|---|---|
-| leaderboard_id | INTEGER | PRIMARY KEY AUTOINCREMENT |
-| player_id | INTEGER | FOREIGN KEY → player |
-| rank | INTEGER | |
-| date_achieved | DATE | |
+The `game_sessions` table stores:
+
+- `session_id` – Unique session ID generated automatically by the database.
+- `player_id` – Foreign key to the player who played the round.
+- `session_date` – Date the session was played.
+- `session_time` – Time the session was played.
+- `result` – Either `'Valid'` or `'Jump Start'`.
+
+### reaction_time Table
+
+The `reaction_time` table stores:
+
+- `reaction_id` – Unique reaction ID generated automatically by the database.
+- `session_id` – Foreign key to the parent session.
+- `player_id` – Foreign key to the player.
+- `reaction_time` – The measured reaction time in milliseconds.
+- `rating` – The rating tier assigned to the reaction.
+
+### leaderboard Table
+
+The `leaderboard` table stores:
+
+- `leaderboard_id` – Unique leaderboard row ID generated automatically.
+- `player_id` – Foreign key to the player.
+- `rank` – Position 1 through 10.
+- `date_achieved` – The date the score was set.
 
 ### Relationship Summary
 
@@ -306,103 +309,98 @@ All foreign keys use `ON DELETE CASCADE` — deleting a player removes their ses
 
 ### Database Operations
 
-| Operation | Method | SQL Command |
-|---|---|---|
-| **Create (player)** | `DB.create_player()` | `INSERT INTO player ...` |
-| **Create (session)** | `DB.create_session()` | `INSERT INTO game_sessions ...` |
-| **Create (reaction)** | `DB.save_reaction()` | `INSERT INTO reaction_time ...` |
-| **Read (login)** | `DB.login_player()` | `SELECT * FROM player WHERE username = ? AND password = ?` |
-| **Read (leaderboard)** | `DB.get_leaderboard()` | `SELECT ... JOIN ... ORDER BY rank` |
-| **Update (re-rank)** | `DB.refresh_leaderboard()` | `DELETE` + `INSERT INTO leaderboard` |
-| **Delete (implicit)** | inside `refresh_leaderboard()` | `DELETE FROM leaderboard` |
+The system performs the following main operations:
+
+- **Create** – Add new players, sessions, and reactions.
+- **Read** – Find a player by username, and retrieve the top-10 leaderboard rows.
+- **Update** – Refresh the leaderboard after each valid reaction.
+- **Delete** – Implicitly remove old leaderboard rows when the top-10 is rebuilt.
 
 All queries use **parameterized placeholders (`?`)** to prevent SQL injection.
 
 ---
 
-## 11. Screenshots
+## Screenshots
 
 ### Start Menu
-
 ![Start Menu](screenshots/start_menu.png)
 
-*The main hub of the application. Users can start the game or open the leaderboard.*
+- Shows the main F1 REFLEX TEST interface. Users can start the game or open the leaderboard.
 
 ### Login Screen
+![Login](screenshots/driver_login.png)
 
-![Login](screenshots/login.png)
-
-*Users enter their username and password. New users can navigate to the registration page.*
+- Users enter their username. New users can navigate to the registration page.
 
 ### Registration Screen
+![Registration](screenshots/driver_register.png)
 
-![Registration](screenshots/register.png)
-
-*Creates a new player account. Validates required fields and password confirmation.*
+- Creates a new player account with a full name and unique username.
 
 ### Lights Game
-
 ![Lights Game](screenshots/lights_game.png)
 
-*Five red lights turn on one by one. The player must wait for the GO signal.*
+- Five red lights turn on one by one. The player must wait for the GO signal.
 
 ### GO Signal
-
 ![GO Signal](screenshots/go_signal.png)
 
-*All lights off — the player must react immediately.*
+- All lights off — the player must react immediately.
 
 ### Jump Start Penalty
-
 ![Jump Start](screenshots/jumpstart.png)
 
-*The player reacted too early. The round ends with a penalty.*
+- The player reacted too early. The round ends with a penalty.
 
 ### Leaderboard
-
 ![Leaderboard](screenshots/leaderboard.png)
 
-*Displays the top-10 fastest valid reactions with rank, name, time, rating, and date.*
+- Displays the top-10 fastest valid reactions with rank, rating, name, time, and date.
 
 ---
 
-## 12. Testing
+## Testing
 
-| # | Test Case | Expected Result | Actual Result | Status |
-|---|---|---|---|---|
-| 1 | Launch application | Start menu appears | Start menu appeared | ✅ Passed |
-| 2 | Register with a new username | Account saved, redirected to login | Account saved, redirected | ✅ Passed |
-| 3 | Register with a duplicate username | Warning: "Username already exists" | Warning displayed | ✅ Passed |
-| 4 | Register with mismatched passwords | Warning: "Passwords do not match" | Warning displayed | ✅ Passed |
-| 5 | Login with correct credentials | Redirect to start menu | Redirected | ✅ Passed |
-| 6 | Login with wrong password | Warning: "Invalid credentials" | Warning displayed | ✅ Passed |
-| 7 | Play a valid round (react after GO) | Time and rating shown; saved to DB | Time and rating saved | ✅ Passed |
-| 8 | React before GO signal | Jump start penalty shown; session saved as invalid | Penalty shown | ✅ Passed |
-| 9 | Open leaderboard after playing | Top-10 shows recent scores with rating | Scores displayed | ✅ Passed |
-| 10 | Click BACK on all screens | Return to start menu without errors | Returned correctly | ✅ Passed |
-| 11 | Delete `f1_reflex.db` and relaunch | Database recreated automatically | Recreated | ✅ Passed |
-| 12 | Verify data persists between sessions | Scores still shown after restart | Persisted | ✅ Passed |
+The system was tested by performing the major operations available in F1 REFLEX TEST.
 
----
-
-## 13. Known Issues / Limitations
-
-| Issue | Notes |
-|---|---|
-| **Plain-text passwords** | Passwords are stored as plain text. Future work should hash them with `bcrypt`. |
-| **No logout button** | Users must restart the app to switch accounts. |
-| **Leaderboard does not auto-refresh** | It rebuilds when opened but does not live-update while visible. |
-| **No individual score deletion** | Players cannot remove their own entries. |
-| **No password recovery** | No way to reset a forgotten password. |
+| Test Case | Expected Result | Actual Result |
+| --- | --- | --- |
+| Launch the application | The Start Menu appears. | Passed |
+| Register a new username | Account is created and saved to the database. | Passed |
+| Register a duplicate username | The system displays "Username already exists". | Passed |
+| Register with empty fields | The system displays "Fill in all fields". | Passed |
+| Login with a valid username | Redirect to the Start Menu. | Passed |
+| Login with an unknown username | The system displays "Username not found". | Passed |
+| Play a valid round | Reaction time and rating are shown and saved. | Passed |
+| React before GO | The system shows "JUMP START" and saves an invalid session. | Passed |
+| Open the leaderboard | Top-10 records with rating are displayed. | Passed |
+| Click the ← arrow | Returns to the Start Menu without errors. | Passed |
+| Delete `f1_reflex.db` and relaunch | The database is recreated automatically. | Passed |
+| Verify data persistence | Scores remain after restarting the application. | Passed |
 
 ---
 
-## 14. Author
+## Known Issues / Limitations
 
-| Name | Section/Code |
-|---|---|
-| **Paolo Miguel C. Plasabas** | CS26L — 3581 |
+1. **No Password Authentication**
+   Login only checks the username. Passwords are not used in the current version — a simplified flow requested for the prototype.
 
-**Course:** CS26 - Software Development
-**Institution:** University of Mindanao — College of Computing Education
-**Exam:** 3rd Written Examination — Final Project Documentation
+2. **No Logout Button**
+   Users must restart the application to switch accounts.
+
+3. **Leaderboard Does Not Auto-Refresh**
+   The leaderboard rebuilds when it is opened, but it does not live-update while visible.
+
+4. **No Individual Score Deletion**
+   Players cannot remove their own entries from the leaderboard.
+
+5. **Local Database Only**
+   The SQLite database is stored locally on the computer running the application. Records are not synchronized between different computers.
+
+---
+
+## Author
+
+**Name:** Paolo Miguel C. Plasabas
+
+**Section:** CS26L — 3581

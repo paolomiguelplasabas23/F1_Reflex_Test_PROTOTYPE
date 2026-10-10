@@ -1,7 +1,7 @@
 from PyQt6 import uic
 from PyQt6.QtWidgets import QMainWindow, QMessageBox
 
-from database import DB
+from features.auth import register
 
 class RegistrationPage(QMainWindow):
     def __init__(self, app):
@@ -17,11 +17,12 @@ class RegistrationPage(QMainWindow):
         username = self.lineEdit_2.text().strip()
         
 
-        if not fullname or not username:
-            QMessageBox.warning(self, "Missing", "Fill in all fields.")
+        ok, message = register(fullname, username)
+        if not ok:
+            QMessageBox.warning(self, "Error", message)
             return
 
-        pid = DB.create_player(fullname, username)
+        pid = register(fullname, username)
         if pid is None:
             QMessageBox.warning(self, "Taken", "Username already exists.")
             return

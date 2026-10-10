@@ -1,7 +1,7 @@
 from PyQt6 import uic
 from PyQt6.QtWidgets import QMainWindow, QMessageBox
 
-from database import DB
+from features.auth import login
 
 class LoginPage(QMainWindow):
     def __init__(self, app):
@@ -20,7 +20,7 @@ class LoginPage(QMainWindow):
             QMessageBox.warning(self, "Missing", "Enter username")
             return
 
-        user = DB.login_player(username)
+        user = login(username)
         if user is None:
             QMessageBox.warning(self, "Login failed", "Username not found.")
             return

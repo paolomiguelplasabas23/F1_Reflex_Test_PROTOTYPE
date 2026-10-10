@@ -3,7 +3,8 @@ import sys
 from PyQt6 import uic
 from PyQt6.QtWidgets import QTableWidgetItem, QWidget
 from PyQt6.QtGui import QColor
-from database import DB
+from features.leaderboard import get_top_10
+from features.game import rate_reaction
 
 
 class Leaderboard(QWidget):
@@ -16,7 +17,7 @@ class Leaderboard(QWidget):
         self.load_leaderboard()
 
     def load_leaderboard(self):
-        rows = DB.get_leaderboard()
+        rows = get_top_10()
         self.tableWidget.setRowCount(10)
 
         for i in range(10):
@@ -25,7 +26,7 @@ class Leaderboard(QWidget):
                 rank = str(r["rank"])
                 name = r["fullname"]
                 time = f"{r['best_time']} ms"
-                rating = DB.rate_reaction(int(r["best_time"]))
+                rating = rate_reaction(int(r["best_time"]))
                 date = r["date_achieved"] or "-"
             else:
                 rank = str(i + 1)
@@ -38,10 +39,7 @@ class Leaderboard(QWidget):
                 item = QTableWidgetItem(text)
                 item.setForeground(QColor("white"))
                 self.tableWidget.setItem(i, col, item)
-            # self.tableWidget.setItem(i, 0, QTableWidgetItem(rank)) 
-            # self.tableWidget.setItem(i, 1, QTableWidgetItem(name))
-            # self.tableWidget.setItem(i, 2, QTableWidgetItem(time))
-            # self.tableWidget.setItem(i, 3, QTableWidgetItem(date))
+           
 
     def go_back(self):
         self.close()
