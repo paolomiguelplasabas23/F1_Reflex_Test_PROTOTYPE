@@ -15,18 +15,13 @@ class RegistrationPage(QMainWindow):
     def handle_register(self):
         fullname = self.lineEdit.text().strip()
         username = self.lineEdit_2.text().strip()
-        password = self.lineEdit_3.text().strip()
-        confirm = self.lineEdit_4.text().strip()
+        
 
-        if not fullname or not username or not password:
+        if not fullname or not username:
             QMessageBox.warning(self, "Missing", "Fill in all fields.")
             return
 
-        if password != confirm:
-            QMessageBox.warning(self, "Mismatch", "Passwords do not match.")
-            return
-
-        pid = DB.create_player(fullname, username, password)
+        pid = DB.create_player(fullname, username)
         if pid is None:
             QMessageBox.warning(self, "Taken", "Username already exists.")
             return

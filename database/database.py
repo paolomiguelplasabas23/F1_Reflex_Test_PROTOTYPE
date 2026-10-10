@@ -25,8 +25,7 @@ class Database:
                 CREATE TABLE IF NOT EXISTS player (
                     player_id   INTEGER PRIMARY KEY AUTOINCREMENT,
                     fullname    VARCHAR(50) NOT NULL,
-                    username    VARCHAR(50) NOT NULL UNIQUE,
-                    password    VARCHAR(50) NOT NULL
+                    username    VARCHAR(50) NOT NULL UNIQUE
                 )
             """)
 
@@ -71,22 +70,22 @@ class Database:
     # ==========================================================
     # PLAYER CRUD
     # ==========================================================
-    def create_player(self, fullname: str, username: str, password: str):
+    def create_player(self, fullname: str, username: str):
         try:
             with self.connect() as conn:
                 cursor = conn.execute(
-                    "INSERT INTO player (fullname, username, password) VALUES (?, ?, ?)",
-                    (fullname, username, password),
+                    "INSERT INTO player (fullname, username) VALUES (?, ?)",
+                    (fullname, username),
                 )
                 return cursor.lastrowid
         except sqlite3.IntegrityError:
             return None
 
-    def login_player(self, username: str, password: str):
+    def login_player(self, username: str):
         with self.connect() as conn:
             row = conn.execute(
-                "SELECT * FROM player WHERE username = ? AND password = ?",
-                (username, password),
+                "SELECT * FROM player WHERE username = ?",
+                (username,),
             ).fetchone()
         return dict(row) if row else None
 
@@ -218,3 +217,5 @@ class Database:
         if ms < 250: return "F3 Racer"
         if ms < 350: return "Karting Racer"
         return "Normal Driver"
+
+    

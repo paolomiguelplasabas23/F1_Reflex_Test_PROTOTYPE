@@ -14,15 +14,15 @@ class LoginPage(QMainWindow):
 
     def handle_login(self):
         username = self.lineEdit.text().strip()
-        password = self.lineEdit_2.text().strip()
+        
 
-        if not username or not password:
-            QMessageBox.warning(self, "Missing", "Enter username and password.")
+        if not username:
+            QMessageBox.warning(self, "Missing", "Enter username")
             return
 
-        user = DB.login_player(username, password)
+        user = DB.login_player(username)
         if user is None:
-            QMessageBox.warning(self, "Login failed", "Invalid credentials.")
+            QMessageBox.warning(self, "Login failed", "Username not found.")
             return
 
         self.app.current_user = user

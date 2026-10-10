@@ -22,7 +22,6 @@ CONFIG = {
     "tick_ms": 800,
     "wait_min_ms":1000,
     "wait_max_ms":3000,
-    "restart_delay_ms": 2000,
 }
 
 class LightsWindow(QMainWindow):
@@ -47,11 +46,7 @@ class LightsWindow(QMainWindow):
         self.wait_timer.setSingleShot(True)
         self.wait_timer.timeout.connect(self.lights_out)
 
-        # RESTART TIMER
-        self.restart_timer = QTimer(self)
-        self.restart_timer.setSingleShot(True)
-        self.restart_timer.timeout.connect(self.start)
-
+    
         self.setWindowTitle("Lights Out")
         self.setStyleSheet("background-color: black;")
         self.build_ui()
@@ -71,16 +66,40 @@ class LightsWindow(QMainWindow):
         layout.setContentsMargins(20, 20, 20, 20)
         layout.setSpacing(18)
 
+        # -------- TOP ROW: back button ---------
+        top_row = QHBoxLayout()
+        top_row.setContentsMargins(0, 0, 0, 0)
+
+        self.backButton = QPushButton("←")
+        self.backButton.setFixedSize(80, 80)
+        self.backButton.setStyleSheet("""
+            QPushButton {
+                background-color: transparent;
+                color: white;
+                font-size: 50px;
+                font-weight: 900;
+                border: none;
+            }
+            QPushButton:hover { color: #e10600; }
+        """)
+        self.backButton.clicked.connect(self.go_back)
+        top_row.addWidget(self.backButton)
+        top_row.addStretch()
+        layout.addLayout(top_row)
+
+        # -------- TITLE ---------
         title = QLabel("LIGHTS OUT")
         title.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         title.setStyleSheet("color: #e10600; font-size: 26px; font-weight: 900;")
         layout.addWidget(title)
 
+        # -------- GO LABEL ---------
         self.goLabel = QLabel("")
         self.goLabel.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.goLabel.setFixedHeight(34)
         layout.addWidget(self.goLabel)
 
+        # -------- LIGHTS ROW ---------
         lights_row =QHBoxLayout()
         lights_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
         lights_row.setSpacing(12)
@@ -93,39 +112,36 @@ class LightsWindow(QMainWindow):
             lights_row.addWidget(light)
         layout.addLayout(lights_row)
 
+        # -------- INFO LABEL ---------
         info = QLabel("PRESS SPACE OR REACT BUTTON AFTER LIGHTS GO OUT")
         info.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         info.setStyleSheet("color: #888; font-size: 11px;")
         layout.addWidget(info)
 
-        btn_row = QHBoxLayout()
-        btn_row.setSpacing(12)
+        layout.addStretch()
+        # ------- REACT BUTTON ---------
+        react_row = QHBoxLayout()
+        react_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.reactButton = QPushButton("REACT")
-        self.reactButton.setStyleSheet("""
-            QPushButton {
-                background-color:#e10600; color:white;
-                font-weight:900; font-size:14px;
-                padding:12px; border:none; border-radius:6px;
-            }
-            QPushButton:hover { background-color:#ff1a1a; }
-        """)
+        self.reactButton.setFixedWidth(200)
+        self.reactButton.setStyleSheet(
+            " QPushButton {"
+            "background-color: #e10600;"
+            "color: white;"
+            "font-weight: 900;"
+            "font-size: 18px;"
+            "padding: 12px;"
+            "border: none;"
+            "border-radius: 6px;"
+            "}"
+        )
         self.reactButton.clicked.connect(self.handle_react)
-        btn_row.addWidget(self.reactButton)
+        react_row.addWidget(self.reactButton)
+        layout.addLayout(react_row)
 
-        self.backButton = QPushButton("BACK")
-        self.backButton.setStyleSheet("""
-            QPushButton{
-                background-color: color:black;
-                font-weight: 700; font-size: 14px;
-                padding: 12px; border:none; border-radius:6px;
-            }
-            QPushButton:hover{ background-color: #dddddd;}
-        """)
-        self.backButton.clicked.connect(self.go_back)
-        btn_row.addWidget(self.backButton)
-        layout.addLayout(btn_row)    
-
+        layout.addStretch()
+    # ----------------------------------- LIGHTS ---------------
     def set_light_off(self, light):
         light.setStyleSheet(
             "background-color: #1a0000; border-radius: 30px; border: 2px solid #333;"
@@ -135,7 +151,7 @@ class LightsWindow(QMainWindow):
     def start(self):
         self.timer.stop()
         self.wait_timer.stop()
-        self.restart_timer.stop()
+        
 
         for light in self.lights:
             self.set_light_off(light)
@@ -214,9 +230,6 @@ class LightsWindow(QMainWindow):
                 DB.save_reaction(sid, user["player_id"], reaction_ms, rating)
                 DB.refresh_leaderboard()
 
-            self.restart_timer.start(CONFIG["restart_delay_ms"])
-            return
-
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Space:
             self.handle_react()
@@ -226,11 +239,9 @@ class LightsWindow(QMainWindow):
     def go_back(self):
         self.timer.stop()
         self.wait_timer.stop()
-        self.restart_timer.stop()
         self.app.show_start_menu()
 
     def closeEvent(self, event):
         self.timer.stop()
         self.wait_timer.stop()
-        self.restart_timer.stop()
         super().closeEvent(event)
