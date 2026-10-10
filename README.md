@@ -323,31 +323,45 @@ All queries use **parameterized placeholders (`?`)** to prevent SQL injection.
 ## 11. Screenshots
 
 ### Start Menu
+
 ![Start Menu](screenshots/start_menu.png)
+
 *The main hub of the application. Users can start the game or open the leaderboard.*
 
 ### Login Screen
+
 ![Login](screenshots/login.png)
+
 *Users enter their username and password. New users can navigate to the registration page.*
 
 ### Registration Screen
+
 ![Registration](screenshots/register.png)
+
 *Creates a new player account. Validates required fields and password confirmation.*
 
 ### Lights Game
+
 ![Lights Game](screenshots/lights_game.png)
+
 *Five red lights turn on one by one. The player must wait for the GO signal.*
 
 ### GO Signal
+
 ![GO Signal](screenshots/go_signal.png)
+
 *All lights off — the player must react immediately.*
 
 ### Jump Start Penalty
+
 ![Jump Start](screenshots/jumpstart.png)
+
 *The player reacted too early. The round ends with a penalty.*
 
 ### Leaderboard
+
 ![Leaderboard](screenshots/leaderboard.png)
+
 *Displays the top-10 fastest valid reactions with rank, name, time, rating, and date.*
 
 ---
@@ -385,9 +399,9 @@ All queries use **parameterized placeholders (`?`)** to prevent SQL injection.
 
 ## 14. Author
 
-| Name | Section |
+| Name | Section/Code |
 |---|---|
-| **Paolo Miguel C. Plasabas** | BSCS — 2 |
+| **Paolo Miguel C. Plasabas** | CS26L — 3581 |
 
 **Course:** CS26 - Software Development
 **Institution:** University of Mindanao — College of Computing Education
